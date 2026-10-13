@@ -26,6 +26,13 @@ export default {
 		}
 		const url = new URL(请求URL文本);
 		const UA = request.headers.get('User-Agent') || 'null';
+		// 过滤非法探测与扫描
+const upgradeH = request.headers.get('Upgrade');
+if (!upgradeH || upgradeH.toLowerCase() !== 'websocket') {
+	if (!url.pathname.includes('/admin') && !url.pathname.includes(env.PATH || '')) {
+		return new Response('Not Found', { status: 404 });
+	}
+}
 		const upgradeHeader = (request.headers.get('Upgrade') || '').toLowerCase(), contentType = (request.headers.get('content-type') || '').toLowerCase();
 		const 管理员密码 = env.ADMIN || env.admin || env.PASSWORD || env.password || env.pswd || env.TOKEN || env.KEY || env.UUID || env.uuid;
 		const 加密秘钥 = env.KEY || '勿动此默认密钥，有需求请自行通过添加变量KEY进行修改';
